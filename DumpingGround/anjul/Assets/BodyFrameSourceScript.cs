@@ -25,8 +25,18 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	public Material BoneMaterial;
 	MappedBody PlayerBody = null;
 	CoordinateMapper coordinateMapper;
+	public Light DirLight;
+	public Light PtLight;
+	public SplashScreenHider splash;
 
 	GameObject baseGameObject = null;
+
+	public bool Started
+	{ get; set; }
+
+//	public bool NobodyHere {
+//		get; set;
+//	}
 
 	public Vector3 GetPlayerPosition()
 	{
@@ -90,7 +100,14 @@ public class BodyFrameSourceScript : MonoBehaviour {
 		baseGameObject = this.CreateBodyObject(0);
 		sensor.Open();
 
-		//maxSpeed = ;
+		maxSpeed = 0.5f;
+		curSpeed = 0.0f;
+
+		Started = false;
+
+		//NobodyHere = true;
+
+		ResetState ();
 
 	}
 
@@ -102,11 +119,40 @@ public class BodyFrameSourceScript : MonoBehaviour {
 		if (Collided)
 						return 0.0f;
 				else
-						return 0.5f;
+						return curSpeed;
 		}
+
+	float timeWhenReset;
+
+	void ResetState()
+	{
+		DirLight.intensity = 0.4f;
+		RenderSettings.fogColor = new Color(1.0f, 1.0f, 1.0f);
+		PtLight.intensity = 2.4f;
+		timeWhenReset = Time.realtimeSinceStartup;
+	}
 
 	// Update is called once per frame
 	void Update () {
+		if (Collided) {
+			Started = false;
+			DirLight.intensity *= 0.95f;
+			RenderSettings.fogColor = RenderSettings.fogColor * 0.95f + new Color(0.0f ,0.0f ,0.0f);
+			PtLight.intensity *= 0.95f;
+
+//			if(DirLight.intensity < 0.01f)
+//			{
+//				ResetState();
+//			}
+		}
+
+
+		if (!Started && (Time.realtimeSinceStartup - timeWhenReset) > 3.0f) {
+			splash.Hide();
+			Started = true;
+		}
+
+
         if (bdReader != null)
         {
             var bdFrame = bdReader.AcquireLatestFrame();
@@ -121,7 +167,8 @@ public class BodyFrameSourceScript : MonoBehaviour {
 							if (ubody!=null){
 								//RefreshBodyObject(ubody, baseGameObject);
 								try {
-									
+									if(Started) 
+									curSpeed = (curSpeed * 0.95f + maxSpeed * 0.05f);
 									var bodyscale = GetPlayerScale();
 									var bodytrans = GetPlayerPosition();
 									PlayerBody = new MappedBody (ubody, 
@@ -131,11 +178,19 @@ public class BodyFrameSourceScript : MonoBehaviour {
 									return;
 								}
 								RefreshBodyObject(PlayerBody, baseGameObject);
-							}
+					//NobodyHere = false;
+							} 
+				else
+				{
+					//NobodyHere = true;
+					curSpeed = curSpeed * 0.9f;
+					//HideBodyObject(PlayerBody, baseGameObject);
+				}
 						bdFrame.Dispose();
 						bdFrame = null;
 					}
         }
+	
 	}
 
 	public Body FindFirstBody(IEnumerable<Body> bodies, CoordinateMapper mapper)
@@ -172,7 +227,7 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	private void RefreshBodyObject(MappedBody body, GameObject bodyObject)
 	{
 		//Debug.Log( body.Joints.Select ((joint) => joint.Value.Position.Y).Min ().ToString());
-
+		
 		for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
 		{
 			Windows.Kinect.Joint sourceJoint = body.Joints[jt];
@@ -186,20 +241,21 @@ public class BodyFrameSourceScript : MonoBehaviour {
 			Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
 			jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 			
-//			LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-//			if(targetJoint.HasValue)
-//			{
-//				lr.SetPosition(0, jointObj.localPosition);
-//				lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
-//				//lr.transform.parent = bodyObject.transform;
-//				lr.SetColors(new Color(1.0f, 1.0f, 1.0f), new Color(1.0f, 1.0f, 1.0f));
-//			}
-//			else
-//			{
-//				lr.enabled = false;
-//			}
+			//			LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+			//			if(targetJoint.HasValue)
+			//			{
+			//				lr.SetPosition(0, jointObj.localPosition);
+			//				lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
+			//				//lr.transform.parent = bodyObject.transform;
+			//				lr.SetColors(new Color(1.0f, 1.0f, 1.0f), new Color(1.0f, 1.0f, 1.0f));
+			//			}
+			//			else
+			//			{
+			//				lr.enabled = false;
+			//			}
 		}
 	}
+
 
 	public bool Collided {
 				get;

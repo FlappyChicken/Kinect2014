@@ -48,7 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\BodyFrameSourceScript.cs" />
      <Compile Include="Assets\Bone.cs" />
+     <Compile Include="Assets\CameraScript.cs" />
      <Compile Include="Assets\MappedBody.cs" />
+     <Compile Include="Assets\SplashScreenHider.cs" />
      <Compile Include="Assets\Triangle.cs" />
      <Compile Include="Assets\WallMoveScript.cs" />
      <Compile Include="Assets\iMappedBody.cs" />

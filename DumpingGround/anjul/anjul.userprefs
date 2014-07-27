@@ -1,15 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MappedBody.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BodyFrameSourceScript.cs">
     <Files>
-      <File FileName="Assets\Triangle.cs" Line="31" Column="3" />
-      <File FileName="anjul.sln" Line="46" Column="1" />
-      <File FileName="Assets\WallMoveScript.cs" Line="76" Column="9" />
-      <File FileName="Assets\BodyFrameSourceScript.cs" Line="174" Column="1" />
-      <File FileName="Assets\MappedBody.cs" Line="99" Column="14" />
-      <File FileName="Assets\iMappedBody.cs" Line="1" Column="1" />
-      <File FileName="Assets\Bone.cs" Line="1" Column="1" />
-      <File FileName="c:\Users\anjul_000\Desktop\work\proj\Kinect2014\DumpingGround\anjul\Assets\Triangle.cs" Line="92" Column="1" />
+      <File FileName="Assets\WallMoveScript.cs" Line="10" Column="2" />
+      <File FileName="Assets\BodyFrameSourceScript.cs" Line="137" Column="10" />
+      <File FileName="Assets\SplashScreenHider.cs" Line="16" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

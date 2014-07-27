@@ -36,7 +36,7 @@ public class WallMoveScript : MonoBehaviour {
 
 		var playerpos = BodyScript.GetPlayerPosition ();
 
-		if (Mathf.Abs (playerpos.z - gameObject.transform.position.z) < 3.0f) {
+		if (Mathf.Abs (playerpos.z - gameObject.transform.position.z) < 1.5f) {
 			var mymesh = gameObject.GetComponent<MeshFilter>().mesh;
 
 			var playerbody = BodyScript.GetLatestPlayerBody();
