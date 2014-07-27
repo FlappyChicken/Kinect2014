@@ -6,14 +6,24 @@ using System.Text;
 
     public class MappedBody
     {
-        public MappedBody(Body initialBody)
+        public MappedBody(Body initialBody, float x_center , float y_center , float z_center )
         {
             if (initialBody == null)
             {
                 throw new ArgumentNullException("initalBody", "Cannot be null");
             }
             this.InternalBody = initialBody;
+
+            m_xCenter = x_center;
+            m_yCenter = y_center;
+            m_zCenter = z_center;
+            m_centroid = GetCentroid();
+  
         }
+
+        private CameraSpacePoint m_centroid;
+        private float m_xCenter, m_yCenter, m_zCenter;
+        
 
         private Body InternalBody { get; set; }
 
@@ -28,6 +38,22 @@ using System.Text;
             {
                 return InternalBody.Joints;
             }
+        }
+
+        public CameraSpacePoint GetCentroid()
+        {
+            var newX = this.InternalBody.Joints[JointType.SpineBase].Position.X;
+            var newY = this.InternalBody.Joints[JointType.SpineBase].Position.Y;
+            var newZ = this.InternalBody.Joints[JointType.SpineBase].Position.Z;
+
+            CameraSpacePoint centroid = new CameraSpacePoint()
+            {
+                X = newX,
+                Y = newY,
+                Z = newZ
+            };
+
+            return centroid;
         }
 
         public ulong TrackingId
@@ -59,9 +85,12 @@ using System.Text;
 
             //mappedJoint.Position.X = this.InternalBody.Joints[JointType.SpineBase].Position.X;
 
-            var newX = unmappedJoint.Position.X -this.InternalBody.Joints[JointType.SpineBase].Position.X;
-            var newY = unmappedJoint.Position.Y -this.InternalBody.Joints[JointType.SpineBase].Position.Y;
-            var newZ = unmappedJoint.Position.Z - this.InternalBody.Joints[JointType.SpineBase].Position.Z;
+            //var newX = unmappedJoint.Position.X -this.InternalBody.Joints[JointType.SpineBase].Position.X;
+            //var newY = unmappedJoint.Position.Y -this.InternalBody.Joints[JointType.SpineBase].Position.Y;
+            //var newZ = unmappedJoint.Position.Z;// - this.InternalBody.Joints[JointType.SpineBase].Position.Z;
+            var newX = unmappedJoint.Position.X - m_centroid.X;
+            var newY = unmappedJoint.Position.Y - m_centroid.Y;
+            var newZ = unmappedJoint.Position.Z - m_centroid.Z + m_zCenter;
 
             CameraSpacePoint newPosition = new CameraSpacePoint()
             {
@@ -78,8 +107,10 @@ using System.Text;
                 TrackingState = unmappedJoint.TrackingState
             };
 
-            return unmappedJoint;
+            return mappedJoint;
         }
 
 
     }
+
+

@@ -25,7 +25,7 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	public Material BoneMaterial;
 
 	CoordinateMapper coordinateMapper;
-	IDictionary<Bone, JointPair> bones;
+	//IDictionary<Bone, JointPair> bones;
 
 	GameObject baseGameObject = null;
 
@@ -89,15 +89,15 @@ public class BodyFrameSourceScript : MonoBehaviour {
 
 							Body ubody = FindFirstBody (bodies, this.coordinateMapper);
 							if (ubody!=null){
-								RefreshBodyObject(ubody, baseGameObject);
+								//RefreshBodyObject(ubody, baseGameObject);
+								MappedBody body;
+								try {
+									body = new MappedBody (ubody, 0.0f, 0.0f, 0.0f);
+								} catch {
+									return;
+								}
+								RefreshBodyObject(body, baseGameObject);
 							}
-
-						// MappedBody body;
-						// try {
-						// 		body = new MappedBody (ubody);
-						// } catch {
-						// 		return;
-						// }
 						bdFrame.Dispose();
 						bdFrame = null;
 					}
@@ -115,16 +115,17 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	{
 		GameObject body = new GameObject("Body:" + id);
 
-		body.transform.Translate(new Vector3(0, 10, -100));
-		
+		body.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
+
 		for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
 		{
 			GameObject jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			
-			LineRenderer lr = jointObj.AddComponent<LineRenderer>();
-			lr.SetVertexCount(2);
-			lr.material = BoneMaterial;
-			lr.SetWidth(1.0f, 1.0f);
+//			LineRenderer lr = jointObj.AddComponent<LineRenderer>();
+//			lr.SetVertexCount(2);
+//			lr.material = BoneMaterial;
+//			lr.SetWidth(1.0f, 1.0f);
+//			//lr.transform.parent = body.transform;
 			
 			jointObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 			jointObj.name = jt.ToString();
@@ -134,8 +135,16 @@ public class BodyFrameSourceScript : MonoBehaviour {
 		return body;
 	}
 
-	private void RefreshBodyObject(Body body, GameObject bodyObject)
+	private void RefreshBodyObject(MappedBody body, GameObject bodyObject)
 	{
+		bodyObject.transform.localPosition = 
+			new Vector3(0,
+		    	-body.Joints.Select((joint) =>
+					joint.Value.Position.Y).Min() * bodyObject.transform.localScale.y + 0.5f
+			            , -90);
+
+		Debug.Log( body.Joints.Select ((joint) => joint.Value.Position.Y).Min ().ToString());
+
 		for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
 		{
 			Windows.Kinect.Joint sourceJoint = body.Joints[jt];
@@ -149,23 +158,24 @@ public class BodyFrameSourceScript : MonoBehaviour {
 			Transform jointObj = bodyObject.transform.FindChild(jt.ToString());
 			jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 			
-			LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-			if(targetJoint.HasValue)
-			{
-				lr.SetPosition(0, jointObj.localPosition);
-				lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
-				lr.SetColors(new Color(1.0f, 1.0f, 1.0f), new Color(10.0f, 10.0f, 10.0f));
-			}
-			else
-			{
-				lr.enabled = false;
-			}
+//			LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+//			if(targetJoint.HasValue)
+//			{
+//				lr.SetPosition(0, jointObj.localPosition);
+//				lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
+//				//lr.transform.parent = bodyObject.transform;
+//				lr.SetColors(new Color(1.0f, 1.0f, 1.0f), new Color(1.0f, 1.0f, 1.0f));
+//			}
+//			else
+//			{
+//				lr.enabled = false;
+//			}
 		}
 	}
 
 	private static Vector3 GetVector3FromJoint(Windows.Kinect.Joint joint)
 	{
-		return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
+		return new Vector3(joint.Position.X , joint.Position.Y , joint.Position.Z );
 	}
 
 	// public void InitBones()
