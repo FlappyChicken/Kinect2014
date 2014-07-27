@@ -46,7 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BodyFrameSourceScript.cs" />
+     <Compile Include="Assets\Bone.cs" />
+     <Compile Include="Assets\MappedBody.cs" />
      <Compile Include="Assets\WallMoveScript.cs" />
+     <Compile Include="Assets\iMappedBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

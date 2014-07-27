@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BodyFrameSourceScript.cs">
+    <Files>
+      <File FileName="Assets\BodyFrameSourceScript.cs" Line="95" Column="9" />
+      <File FileName="Assets\BodyFrameSourceScript.cs" Line="237" Column="1" />
+      <File FileName="Assets\MappedBody.cs" Line="1" Column="1" />
+      <File FileName="Assets\iMappedBody.cs" Line="1" Column="1" />
+      <File FileName="Assets\Bone.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
