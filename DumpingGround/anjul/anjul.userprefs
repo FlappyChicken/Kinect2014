@@ -1,12 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BodyFrameSourceScript.cs">
     <Files>
-      <File FileName="Assets\WallMoveScript.cs" Line="13" Column="64" />
-      <File FileName="Assets\BodyFrameSourceScript.cs" Line="129" Column="4" />
-      <File FileName="Assets\MappedBody.cs" Line="94" Column="3" />
-      <File FileName="Assets\iMappedBody.cs" Line="14" Column="1" />
-      <File FileName="Assets\Bone.cs" Line="43" Column="6" />
+      <File FileName="Assets\BodyFrameSourceScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\WallMoveScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\BodyFrameSourceScript.cs" Line="132" Column="47" />
+      <File FileName="Assets\MappedBody.cs" Line="1" Column="1" />
+      <File FileName="Assets\iMappedBody.cs" Line="1" Column="1" />
+      <File FileName="Assets\Bone.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

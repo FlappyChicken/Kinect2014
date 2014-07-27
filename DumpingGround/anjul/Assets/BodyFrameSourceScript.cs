@@ -23,11 +23,25 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	BodyFrameReader bdReader;
 	IList<Body> bodies = null;
 	public Material BoneMaterial;
-
+	MappedBody PlayerBody = null;
 	CoordinateMapper coordinateMapper;
-	//IDictionary<Bone, JointPair> bones;
 
 	GameObject baseGameObject = null;
+
+	public Vector3 GetPlayerPosition()
+	{
+		return new Vector3 (0.0f, 0.5f, -90.0f);
+	}
+
+	public Vector3 GetPlayerScale()
+	{
+		return new Vector3 (10.0f, 10.0f, 10.0f);
+	}
+
+	public MappedBody GetLatestPlayerBody()
+	{
+		return PlayerBody;
+	}
 
 	private Dictionary<JointType, JointType> _BoneMap = new Dictionary<JointType, JointType>()
 	{
@@ -90,13 +104,17 @@ public class BodyFrameSourceScript : MonoBehaviour {
 							Body ubody = FindFirstBody (bodies, this.coordinateMapper);
 							if (ubody!=null){
 								//RefreshBodyObject(ubody, baseGameObject);
-								MappedBody body;
 								try {
-									body = new MappedBody (ubody, 0.0f, 0.0f, 0.0f);
+									
+									var bodyscale = GetPlayerScale();
+									var bodytrans = GetPlayerPosition();
+									PlayerBody = new MappedBody (ubody, 
+						                       bodytrans.x, bodytrans.y, bodytrans.z,
+						                       bodyscale.x, bodyscale.y, bodyscale.z);
 								} catch {
 									return;
 								}
-								RefreshBodyObject(body, baseGameObject);
+								RefreshBodyObject(PlayerBody, baseGameObject);
 							}
 						bdFrame.Dispose();
 						bdFrame = null;
@@ -115,7 +133,7 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	{
 		GameObject body = new GameObject("Body:" + id);
 
-		body.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
+		body.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
 		for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
 		{
@@ -138,12 +156,12 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	private void RefreshBodyObject(MappedBody body, GameObject bodyObject)
 	{
 		bodyObject.transform.localPosition = 
-			new Vector3(0,
+			new Vector3(0.0f,
 		    	-body.Joints.Select((joint) =>
-					joint.Value.Position.Y).Min() * bodyObject.transform.localScale.y + 0.5f
-			            , -90);
+					joint.Value.Position.Y).Min() * bodyObject.transform.localScale.y
+			            , 0.0f);
 
-		Debug.Log( body.Joints.Select ((joint) => joint.Value.Position.Y).Min ().ToString());
+		//Debug.Log( body.Joints.Select ((joint) => joint.Value.Position.Y).Min ().ToString());
 
 		for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
 		{

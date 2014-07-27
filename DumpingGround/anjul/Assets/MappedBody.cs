@@ -6,7 +6,9 @@ using System.Text;
 
     public class MappedBody
     {
-        public MappedBody(Body initialBody, float x_center , float y_center , float z_center )
+        public MappedBody(Body initialBody, 
+	                  float x_center , float y_center , float z_center,
+	                  float x_scale,   float y_scale,   float z_scale)
         {
             if (initialBody == null)
             {
@@ -17,16 +19,18 @@ using System.Text;
             m_xCenter = x_center;
             m_yCenter = y_center;
             m_zCenter = z_center;
+			m_xScale  = x_scale;
+			m_yScale  = y_scale;
+			m_zScale  = z_scale;
             m_centroid = GetCentroid();
   
         }
 
         private CameraSpacePoint m_centroid;
         private float m_xCenter, m_yCenter, m_zCenter;
+		private float m_xScale, m_yScale, m_zScale;
         
-
         private Body InternalBody { get; set; }
-
 
         public static int JointCount { 
             get{
@@ -90,7 +94,16 @@ using System.Text;
             //var newZ = unmappedJoint.Position.Z;// - this.InternalBody.Joints[JointType.SpineBase].Position.Z;
             var newX = unmappedJoint.Position.X - m_centroid.X;
             var newY = unmappedJoint.Position.Y - m_centroid.Y;
-            var newZ = unmappedJoint.Position.Z - m_centroid.Z + m_zCenter;
+            var newZ = unmappedJoint.Position.Z - m_centroid.Z;
+
+		newX *= m_xScale;			
+		newY *= m_yScale;
+		newZ *= m_zScale;
+
+		newX += m_xCenter;
+		newY += m_yCenter;
+		newZ += m_zCenter;
+			
 
             CameraSpacePoint newPosition = new CameraSpacePoint()
             {
