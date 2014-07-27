@@ -1,4 +1,5 @@
 ﻿using Windows.Kinect;
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ using System.Text;
 			m_xScale  = x_scale;
 			m_yScale  = y_scale;
 			m_zScale  = z_scale;
-		    m_minY 	  = FindMinY ();
             m_centroid = GetCentroid();
   
         }
@@ -30,7 +30,6 @@ using System.Text;
         private CameraSpacePoint m_centroid;
         private float m_xCenter, m_yCenter, m_zCenter;
 		private float m_xScale, m_yScale, m_zScale;
-		private float m_minY;
         
         private Body InternalBody { get; set; }
 
@@ -39,18 +38,12 @@ using System.Text;
                 return Body.JointCount;
             }
         }
-        public IDictionary<JointType, Joint> UnmappedJoints {
+        public IDictionary<JointType, Windows.Kinect.Joint> UnmappedJoints {
             get
             {
                 return InternalBody.Joints;
             }
         }
-
-		public float FindMinY()
-		{
-		  return this.InternalBody.Joints.Select((joint) =>
-		                                              joint.Value.Position.Y).Min();
-		}
 
         public CameraSpacePoint GetCentroid()
         {
@@ -76,22 +69,38 @@ using System.Text;
             }
         }
 
-        public IDictionary<JointType, Joint> Joints
+        public IDictionary<JointType, Windows.Kinect.Joint> Joints
         {
             get
             {
-                return InternalBody.Joints.Select(j =>
+                var tempKvps = InternalBody.Joints.Select(j =>
 
-                    new KeyValuePair<JointType, Joint>(
+                    new KeyValuePair<JointType, Windows.Kinect.Joint>(
                         j.Key, 
                         this.MapJoint(j.Value)
                     )
-                ).ToDictionary(pair => pair.Key, pair => pair.Value);
+                );
+				float height = tempKvps.Select (
+					j => j.Value.Position.Y).Min ();
+				return tempKvps.Select ( j=> new KeyValuePair<JointType, Windows.Kinect.Joint>(
+					j.Key,
+					new Windows.Kinect.Joint()
+					{
+						JointType = j.Value.JointType,
+						TrackingState = j.Value.TrackingState,
+						Position = new CameraSpacePoint()
+						{
+							X = j.Value.Position.X,
+							Y = j.Value.Position.Y - height,
+							Z = j.Value.Position.Z
+						}
+					}))
+				.ToDictionary(pair => pair.Key, pair => pair.Value);
             }
         }
 
 
-        private Joint MapJoint(Joint unmappedJoint)
+        private Windows.Kinect.Joint MapJoint(Windows.Kinect.Joint unmappedJoint)
         {
  
 
@@ -101,7 +110,7 @@ using System.Text;
             //var newY = unmappedJoint.Position.Y -this.InternalBody.Joints[JointType.SpineBase].Position.Y;
             //var newZ = unmappedJoint.Position.Z;// - this.InternalBody.Joints[JointType.SpineBase].Position.Z;
             var newX = unmappedJoint.Position.X - m_centroid.X;
-            var newY = unmappedJoint.Position.Y - m_centroid.Y - m_minY;
+            var newY = unmappedJoint.Position.Y - m_centroid.Y;
             var newZ = unmappedJoint.Position.Z - m_centroid.Z;
 
 		newX *= m_xScale;			
@@ -120,7 +129,7 @@ using System.Text;
             };
             
 
-            Joint mappedJoint = new Joint()
+            Windows.Kinect.Joint mappedJoint = new Windows.Kinect.Joint()
             {
                 JointType = unmappedJoint.JointType,
                 Position = newPosition,
