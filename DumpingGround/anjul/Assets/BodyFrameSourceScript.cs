@@ -28,6 +28,7 @@ public class BodyFrameSourceScript : MonoBehaviour {
 	public Light DirLight;
 	public Light PtLight;
 	public SplashScreenHider splash;
+	public FlappyBird Flappy = new FlappyBird ();
 
 	GameObject baseGameObject = null;
 
@@ -173,7 +174,9 @@ public class BodyFrameSourceScript : MonoBehaviour {
 									var bodytrans = GetPlayerPosition();
 									PlayerBody = new MappedBody (ubody, 
 						                       bodytrans.x, bodytrans.y, bodytrans.z,
-						                       bodyscale.x, bodyscale.y, bodyscale.z);
+						                       bodyscale.x, bodyscale.y, bodyscale.z, Flappy.Height);
+									Flappy.evolve(PlayerBody);
+
 								} catch {
 									return;
 								}

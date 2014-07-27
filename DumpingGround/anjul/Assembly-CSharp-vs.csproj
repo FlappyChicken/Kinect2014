@@ -49,11 +49,16 @@
      <Compile Include="Assets\BodyFrameSourceScript.cs" />
      <Compile Include="Assets\Bone.cs" />
      <Compile Include="Assets\CameraScript.cs" />
+     <Compile Include="Assets\FlapDetection.cs" />
+     <Compile Include="Assets\FlapState.cs" />
+     <Compile Include="Assets\FlappyBird.cs" />
+     <Compile Include="Assets\FloatPoint.cs" />
+     <Compile Include="Assets\IMappedBody.cs" />
      <Compile Include="Assets\MappedBody.cs" />
      <Compile Include="Assets\SplashScreenHider.cs" />
      <Compile Include="Assets\Triangle.cs" />
+     <Compile Include="Assets\VectorFlappy.cs" />
      <Compile Include="Assets\WallMoveScript.cs" />
-     <Compile Include="Assets\iMappedBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">

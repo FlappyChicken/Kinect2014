@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-    public class MappedBody
+    public class MappedBody : IMappedBody
     {
         public MappedBody(Body initialBody, 
 	                  float x_center , float y_center , float z_center,
-	                  float x_scale,   float y_scale,   float z_scale)
+	                  float x_scale,   float y_scale,   float z_scale, float fly_height)
         {
             if (initialBody == null)
             {
@@ -23,6 +23,7 @@ using System.Text;
 			m_xScale  = x_scale;
 			m_yScale  = y_scale;
 			m_zScale  = z_scale;
+			m_flyHeight = fly_height;
             m_centroid = GetCentroid();
   
         }
@@ -30,14 +31,10 @@ using System.Text;
         private CameraSpacePoint m_centroid;
         private float m_xCenter, m_yCenter, m_zCenter;
 		private float m_xScale, m_yScale, m_zScale;
+		private float m_flyHeight;
         
         private Body InternalBody { get; set; }
-
-        public static int JointCount { 
-            get{
-                return Body.JointCount;
-            }
-        }
+	
         public IDictionary<JointType, Windows.Kinect.Joint> UnmappedJoints {
             get
             {
@@ -91,7 +88,7 @@ using System.Text;
 						Position = new CameraSpacePoint()
 						{
 							X = j.Value.Position.X,
-							Y = j.Value.Position.Y - height,
+							Y = j.Value.Position.Y - height + m_flyHeight * 3,
 							Z = j.Value.Position.Z
 						}
 					}))

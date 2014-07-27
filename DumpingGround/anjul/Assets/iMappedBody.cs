@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-   interface IMappedBody
+   public interface IMappedBody
     {
-        IDictionary<JointType, Joint> MappedJoints { get; }
-        int JointCount { get; }
+        IDictionary<JointType, Joint> Joints { get; }
+		IDictionary<JointType, Joint> UnmappedJoints{ get; }
 
-
+	
     }
