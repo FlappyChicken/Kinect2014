@@ -22,6 +22,7 @@ using System.Text;
 			m_xScale  = x_scale;
 			m_yScale  = y_scale;
 			m_zScale  = z_scale;
+		    m_minY 	  = FindMinY ();
             m_centroid = GetCentroid();
   
         }
@@ -29,6 +30,7 @@ using System.Text;
         private CameraSpacePoint m_centroid;
         private float m_xCenter, m_yCenter, m_zCenter;
 		private float m_xScale, m_yScale, m_zScale;
+		private float m_minY;
         
         private Body InternalBody { get; set; }
 
@@ -43,6 +45,12 @@ using System.Text;
                 return InternalBody.Joints;
             }
         }
+
+		public float FindMinY()
+		{
+		  return this.InternalBody.Joints.Select((joint) =>
+		                                              joint.Value.Position.Y).Min();
+		}
 
         public CameraSpacePoint GetCentroid()
         {
@@ -93,7 +101,7 @@ using System.Text;
             //var newY = unmappedJoint.Position.Y -this.InternalBody.Joints[JointType.SpineBase].Position.Y;
             //var newZ = unmappedJoint.Position.Z;// - this.InternalBody.Joints[JointType.SpineBase].Position.Z;
             var newX = unmappedJoint.Position.X - m_centroid.X;
-            var newY = unmappedJoint.Position.Y - m_centroid.Y;
+            var newY = unmappedJoint.Position.Y - m_centroid.Y - m_minY;
             var newZ = unmappedJoint.Position.Z - m_centroid.Z;
 
 		newX *= m_xScale;			
@@ -104,7 +112,6 @@ using System.Text;
 		newY += m_yCenter;
 		newZ += m_zCenter;
 			
-
             CameraSpacePoint newPosition = new CameraSpacePoint()
             {
                 X = newX,

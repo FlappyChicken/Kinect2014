@@ -17,6 +17,29 @@ using UnityEngine;
             vertices = pointList.AsEnumerable();
         }
 
+	public bool IsInTriangleDebug(Vector3 point)
+	{
+		//iterate over all indices
+		Vector3[] vert = vertices.ToArray ();
+
+		//this condition must be true for all edges for the point to be inside
+		bool compareEdge0 = checkConditionTriangle (point, vert [0], vert [1]);
+		bool compareEdge1 = checkConditionTriangle (point, vert [1], vert [2]);
+		bool compareEdge2 = checkConditionTriangle (point, vert [2], vert [0]);
+		
+		Debug.Log ("Intersect: " + vert [0] + vert [1] + vert [2] + " :: " + point);
+
+		Debug.Log ("Edge conditions: " + compareEdge0 + compareEdge1 + compareEdge2);
+
+		if (this.IsInTriangle (point)) {
+
+
+						return true;
+				} else
+						return false;
+
+		}
+
         public bool IsInTriangle(Vector3 point)
         {
             bool inTriangle=false;
@@ -30,8 +53,11 @@ using UnityEngine;
             bool compareEdge2 = checkConditionTriangle(point, vert[2], vert[0]);
             
 
-            if (compareEdge0 && compareEdge1 && compareEdge2)
-                    inTriangle = true;
+            if ((compareEdge0 && compareEdge1 && compareEdge2)
+		    ||  (!compareEdge0 && !compareEdge1 && !compareEdge2)) {
+			//Debug.Log ("Intersection: " + vert[0] + vert[1] + vert[2] + " :: " + point);
+						inTriangle = true;
+				}
             else
                     inTriangle= false; //if condition not met then break
                              

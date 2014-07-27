@@ -1,13 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BodyFrameSourceScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\WallMoveScript.cs">
     <Files>
-      <File FileName="Assets\BodyFrameSourceScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\WallMoveScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\BodyFrameSourceScript.cs" Line="132" Column="47" />
-      <File FileName="Assets\MappedBody.cs" Line="1" Column="1" />
+      <File FileName="anjul.sln" Line="1" Column="1" />
+      <File FileName="Assets\WallMoveScript.cs" Line="13" Column="43" />
+      <File FileName="Assets\BodyFrameSourceScript.cs" Line="101" Column="3" />
+      <File FileName="Assets\MappedBody.cs" Line="99" Column="1" />
       <File FileName="Assets\iMappedBody.cs" Line="1" Column="1" />
       <File FileName="Assets\Bone.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\anjul_000\Desktop\work\proj\Kinect2014\DumpingGround\anjul\Assets\Triangle.cs" Line="47" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

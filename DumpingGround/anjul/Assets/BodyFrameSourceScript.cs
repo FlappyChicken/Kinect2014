@@ -82,12 +82,28 @@ public class BodyFrameSourceScript : MonoBehaviour {
 		bdReader = sensor.BodyFrameSource.OpenReader();
 		coordinateMapper = sensor.CoordinateMapper;
 		
-		FrameDescription fd = sensor.DepthFrameSource.FrameDescription;
+		//FrameDescription fd = sensor.DepthFrameSource.FrameDescription;
+
+		Collided = false;
 
 		//InitBones();
 		baseGameObject = this.CreateBodyObject(0);
 		sensor.Open();
+
+		//maxSpeed = ;
+
 	}
+
+	private float maxSpeed;
+	private float curSpeed;
+
+	public float GetAnimationSpeed()
+	{
+		if (Collided)
+						return 0.0f;
+				else
+						return 0.5f;
+		}
 
 	// Update is called once per frame
 	void Update () {
@@ -155,12 +171,6 @@ public class BodyFrameSourceScript : MonoBehaviour {
 
 	private void RefreshBodyObject(MappedBody body, GameObject bodyObject)
 	{
-		bodyObject.transform.localPosition = 
-			new Vector3(0.0f,
-		    	-body.Joints.Select((joint) =>
-					joint.Value.Position.Y).Min() * bodyObject.transform.localScale.y
-			            , 0.0f);
-
 		//Debug.Log( body.Joints.Select ((joint) => joint.Value.Position.Y).Min ().ToString());
 
 		for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
@@ -191,7 +201,14 @@ public class BodyFrameSourceScript : MonoBehaviour {
 		}
 	}
 
-	private static Vector3 GetVector3FromJoint(Windows.Kinect.Joint joint)
+	public bool Collided {
+				get;
+				set;
+		}
+
+
+
+	public static Vector3 GetVector3FromJoint(Windows.Kinect.Joint joint)
 	{
 		return new Vector3(joint.Position.X , joint.Position.Y , joint.Position.Z );
 	}
